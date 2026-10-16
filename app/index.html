@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark" />
+    <title>Spleeter Studio</title>
+    <link rel="icon" href="/icon.png" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div id="app" class="application-frame">
+      <header class="workspace-tabs" id="workspaceTabs" role="tablist" aria-label="工作区标签页">
+        <button class="workspace-tab home-tab is-active" id="libraryTab" type="button" role="tab" aria-selected="true" aria-haspopup="menu">
+          <i data-lucide="house" aria-hidden="true"></i>
+          <span>项目库</span>
+        </button>
+        <div class="project-tabs" id="projectTabs" role="presentation"></div>
+        <button class="add-tab-button" id="newTabButton" type="button" title="新建项目" aria-label="新建项目"><i data-lucide="plus" aria-hidden="true"></i></button>
+        <div class="tab-bar-fill" aria-hidden="true"></div>
+      </header>
+
+      <div class="app-shell" id="appShell">
+        <aside class="sidebar" aria-label="主导航">
+        <button class="brand" id="brandButton" type="button" aria-label="返回项目库">
+          <img src="/icon.png" alt="" />
+          <span>Spleeter <strong>Studio</strong></span>
+        </button>
+
+        <nav class="nav-list">
+          <button class="nav-item is-active" id="libraryNav" type="button">
+            <i class="nav-icon" data-lucide="layout-grid" aria-hidden="true"></i>
+            <span>项目库</span>
+            <span class="nav-count" id="projectCount">0</span>
+          </button>
+          <button class="nav-item" id="newProjectNav" type="button">
+            <i class="nav-icon" data-lucide="plus" aria-hidden="true"></i>
+            <span>新建项目</span>
+          </button>
+        </nav>
+
+        <section class="sidebar-recents" aria-labelledby="recentTitle">
+          <div class="sidebar-label" id="recentTitle">最近打开</div>
+          <div id="recentProjects" class="recent-list"></div>
+        </section>
+
+        <div class="runtime-card" id="runtimeCard">
+          <span class="status-dot" aria-hidden="true"></span>
+          <div>
+            <strong id="runtimeTitle">正在检查引擎</strong>
+            <span id="runtimeDetail">RoFormer · 本地分离</span>
+          </div>
+          <button id="runtimeRetry" class="icon-button small" type="button" title="重新检查" aria-label="重新检查运行环境"><i data-lucide="refresh-cw" aria-hidden="true"></i></button>
+        </div>
+      </aside>
+
+      <main class="main-area">
+        <section id="libraryView" class="view library-view">
+          <header class="page-header">
+            <div>
+              <p class="eyebrow">本地工作区</p>
+              <h1>项目库</h1>
+            </div>
+            <div class="header-actions">
+              <label class="search-box">
+                <i data-lucide="search" aria-hidden="true"></i>
+                <input id="projectSearch" type="search" placeholder="搜索项目" autocomplete="off" />
+              </label>
+              <button class="primary-button" id="newProjectButton" type="button">
+                <i data-lucide="plus" aria-hidden="true"></i>
+                新建项目
+              </button>
+            </div>
+          </header>
+
+          <div id="runtimeBanner" class="runtime-banner is-hidden" role="status">
+            <div class="banner-mark">!</div>
+            <div>
+              <strong>分离引擎尚未就绪</strong>
+              <p id="runtimeBannerText"></p>
+            </div>
+            <div class="banner-actions">
+              <button id="configurePythonButton" class="secondary-button" type="button">选择 Python</button>
+              <button id="runtimeBannerRetry" class="secondary-button" type="button">重新检查</button>
+            </div>
+          </div>
+
+          <div class="library-toolbar">
+            <div class="segmented" role="tablist" aria-label="项目状态">
+              <button type="button" class="is-active" data-filter="all">全部</button>
+              <button type="button" data-filter="ready">已完成</button>
+              <button type="button" data-filter="processing">处理中</button>
+            </div>
+            <label class="sort-control">
+              <span>排序</span>
+              <select id="projectSort">
+                <option value="newest">最近创建</option>
+                <option value="name">项目名称</option>
+                <option value="stems">音轨数量</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="project-table-wrap">
+            <div class="project-table-head" aria-hidden="true">
+              <span>项目</span>
+              <span>音轨</span>
+              <span>时长</span>
+              <span>状态</span>
+              <span></span>
+            </div>
+            <div id="projectList" class="project-list"></div>
+          </div>
+
+          <div id="emptyState" class="empty-state is-hidden">
+            <div class="empty-visual" aria-hidden="true">
+              <span></span><span></span><span></span><span></span><span></span>
+            </div>
+            <h2>暂无分轨项目</h2>
+            <button class="primary-button" id="emptyAddButton" type="button">添加音频</button>
+          </div>
+        </section>
+
+        <section id="studioView" class="view studio-view is-hidden" aria-label="多轨工程">
+          <header class="studio-header">
+            <button class="back-button" id="backToLibrary" type="button" title="返回项目库" aria-label="返回项目库"><i data-lucide="arrow-left" aria-hidden="true"></i></button>
+            <div class="project-heading">
+              <div class="mini-cover" id="studioCover"><span></span><span></span><span></span></div>
+              <div>
+                <h1 id="studioTitle">未选择项目</h1>
+                <p id="studioMeta">多轨工程</p>
+              </div>
+            </div>
+            <div class="studio-header-actions">
+              <label class="zoom-control" title="时间轴缩放">
+                <i data-lucide="minus" aria-hidden="true"></i>
+                <input id="zoomSlider" type="range" min="1" max="5" value="1" step="0.25" aria-label="时间轴缩放" />
+                <i data-lucide="plus" aria-hidden="true"></i>
+              </label>
+              <a class="secondary-button export-button" id="exportButton" href="#" download>
+                <i data-lucide="download" aria-hidden="true"></i>
+                导出音轨
+              </a>
+            </div>
+          </header>
+
+          <div id="studioLoading" class="studio-loading">
+            <span class="spinner"></span>
+            <strong>正在载入音轨</strong>
+          </div>
+
+          <div id="mixer" class="mixer is-hidden">
+            <div class="mixer-side">
+              <div class="mixer-side-title">
+                <span>混音器</span>
+                <span id="trackCountLabel">0 轨</span>
+              </div>
+              <div id="channelStrips" class="channel-strips"></div>
+            </div>
+
+            <div
+              class="mixer-resizer"
+              id="mixerResizer"
+              role="separator"
+              aria-label="调整混音器宽度"
+              aria-orientation="vertical"
+              aria-valuemin="250"
+              aria-valuemax="500"
+              aria-valuenow="286"
+              tabindex="0"
+            ></div>
+
+            <div class="timeline-viewport" id="timelineViewport">
+              <div class="timeline-content" id="timelineContent">
+                <div class="ruler" id="timelineRuler"></div>
+                <div id="waveformRows" class="waveform-rows"></div>
+                <button id="playhead" class="playhead" type="button" aria-label="播放位置">
+                  <span></span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <footer class="transport">
+            <div class="transport-project">
+              <div class="mini-cover" id="transportCover"><span></span><span></span><span></span></div>
+              <div>
+                <strong id="transportTitle">Spleeter Studio</strong>
+                <span id="transportTracks">多轨工程</span>
+              </div>
+            </div>
+            <div class="transport-center">
+              <div class="transport-buttons">
+                <button class="icon-button" id="backwardButton" type="button" title="后退 10 秒" aria-label="后退 10 秒"><i data-lucide="rewind" aria-hidden="true"></i></button>
+                <button class="play-button" id="playButton" type="button" aria-label="播放"><i class="play-icon" data-lucide="play" aria-hidden="true"></i><i class="pause-icon" data-lucide="pause" aria-hidden="true"></i></button>
+                <button class="icon-button" id="forwardButton" type="button" title="前进 10 秒" aria-label="前进 10 秒"><i data-lucide="fast-forward" aria-hidden="true"></i></button>
+                <button class="icon-button" id="loopButton" type="button" title="循环播放" aria-label="循环播放"><i data-lucide="repeat-2" aria-hidden="true"></i></button>
+              </div>
+              <div class="time-readout"><span id="currentTime">0:00</span><span>/</span><span id="totalTime">0:00</span></div>
+            </div>
+            <div class="master-controls">
+              <label class="rate-control">
+                <span>速度</span>
+                <select id="playbackRate" aria-label="播放速度">
+                  <option value="0.75">0.75×</option>
+                  <option value="1" selected>1.00×</option>
+                  <option value="1.25">1.25×</option>
+                  <option value="1.5">1.50×</option>
+                </select>
+              </label>
+              <label class="master-volume" title="主音量">
+                <i data-lucide="volume-2" aria-hidden="true"></i>
+                <input id="masterVolume" type="range" min="0" max="1" value="0.85" step="0.01" aria-label="主音量" />
+              </label>
+            </div>
+          </footer>
+        </section>
+        </main>
+      </div>
+    </div>
+
+    <dialog id="newProjectDialog" class="new-project-dialog">
+      <form method="dialog" class="dialog-panel" id="newProjectForm">
+        <header>
+          <div>
+            <p class="eyebrow">RoFormer 分离</p>
+            <h2>新建项目</h2>
+          </div>
+          <button class="icon-button" id="closeDialog" value="cancel" type="button" aria-label="关闭"><i data-lucide="x" aria-hidden="true"></i></button>
+        </header>
+
+        <label class="drop-zone" id="dropZone">
+          <input id="audioFileInput" type="file" accept="audio/*,.mp3,.wav,.flac,.ogg,.m4a,.aac,.wma" />
+          <span class="upload-mark" aria-hidden="true"><i data-lucide="upload" aria-hidden="true"></i></span>
+          <strong id="dropZoneTitle">选择音频文件</strong>
+          <span id="dropZoneMeta">MP3、WAV、FLAC、OGG、M4A、AAC、WMA</span>
+        </label>
+
+        <fieldset class="stem-fieldset">
+          <legend>分离模式</legend>
+          <div class="stem-options">
+            <label>
+              <input type="radio" name="stemCount" value="2" checked />
+              <span><strong>2 轨 · 人声 / 伴奏</strong><small>Big Beta 6X</small></span>
+            </label>
+            <label>
+              <input type="radio" name="stemCount" value="4" />
+              <span><strong>4 轨</strong><small>人声 · 鼓 · 贝斯 · 其他</small></span>
+            </label>
+            <label>
+              <input type="radio" name="stemCount" value="5" />
+              <span><strong>5 轨</strong><small>增加钢琴音轨</small></span>
+            </label>
+            <label>
+              <input type="radio" name="stemCount" value="6" />
+              <span><strong>6 轨</strong><small>人声 · 鼓 · 贝斯 · 钢琴 · 吉他 · 其他</small></span>
+            </label>
+          </div>
+        </fieldset>
+        <p id="modelHint" class="model-hint">2 轨使用 Big Beta 6X，4 / 5 / 6 轨使用 SW Fixed 多轨模型。</p>
+
+        <div id="uploadProgress" class="upload-progress is-hidden" role="status">
+          <div><span id="uploadStatus">正在上传</span><span id="uploadPercent">0%</span></div>
+          <progress id="uploadProgressBar" max="100" value="0"></progress>
+        </div>
+
+        <p id="dialogError" class="dialog-error is-hidden"></p>
+
+        <footer>
+          <button class="secondary-button" id="cancelDialog" value="cancel" type="button">取消</button>
+          <button class="primary-button" id="createProjectButton" value="default" type="submit" disabled>开始分离</button>
+        </footer>
+      </form>
+    </dialog>
+
+    <div id="toastRegion" class="toast-region" aria-live="polite"></div>
+
+    <script src="/vendor/lucide.min.js" defer></script>
+    <script src="/app.js" defer></script>
+  </body>
+</html>

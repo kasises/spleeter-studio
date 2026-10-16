@@ -1,0 +1,83 @@
+{
+  "name": "spleeter-studio",
+  "version": "1.1.0",
+  "private": true,
+  "description": "A desktop multitrack workspace powered by offline RoFormer models",
+  "main": "electron/main.cjs",
+  "author": "Spleeter Studio Contributors",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron .",
+    "check": "node --check electron/main.cjs && node --check electron/preload.cjs && node --check app/app.js && python -m py_compile server.py roformer_models.py roformer_audio.py roformer_worker.py",
+    "dist": "electron-builder --win nsis",
+    "pack": "electron-builder --dir"
+  },
+  "devDependencies": {
+    "electron": "31.7.7",
+    "electron-builder": "25.1.8",
+    "lucide": "1.57.0"
+  },
+  "build": {
+    "appId": "studio.spleeter.desktop",
+    "productName": "Spleeter Studio",
+    "electronDist": "node_modules/electron/dist",
+    "artifactName": "Spleeter-Studio-Setup-${version}.${ext}",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "electron/**/*",
+      "assets/icon.png",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "server.py",
+        "to": "studio/server.py"
+      },
+      {
+        "from": "app",
+        "to": "studio/app"
+      },
+      {
+        "from": "assets/icon.ico",
+        "to": "studio/app/icon.ico"
+      },
+      {
+        "from": "roformer_worker.py",
+        "to": "studio/roformer_worker.py"
+      },
+      {
+        "from": "roformer_models.py",
+        "to": "studio/roformer_models.py"
+      },
+      {
+        "from": "roformer_audio.py",
+        "to": "studio/roformer_audio.py"
+      }
+    ],
+    "win": {
+      "signAndEditExecutable": false,
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "assets/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": false,
+      "createStartMenuShortcut": false,
+      "shortcutName": "Spleeter Studio",
+      "installerIcon": "assets/icon.ico",
+      "uninstallerIcon": "assets/icon.ico",
+      "include": "build/installer.nsh"
+    }
+  }
+}
