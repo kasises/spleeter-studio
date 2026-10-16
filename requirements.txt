@@ -1,0 +1,8 @@
+# GPU users should install the PyTorch build that matches their CUDA driver
+# from https://pytorch.org/get-started/locally/ before installing this file.
+torch
+audio-separator==0.47.0
+numpy
+soundfile
+PyYAML
+requests

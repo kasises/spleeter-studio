@@ -18,10 +18,10 @@ Spleeter Studio 是一个 Windows 桌面多轨音频分离工具。它使用本�
 ```bat
 conda create -n SpleeterRoFormer python=3.11
 conda activate SpleeterRoFormer
-pip install audio-separator==0.47.0 torch numpy soundfile pyyaml requests
+pip install -r requirements.txt
 ```
 
-然后在应用中点击“选择 Python”，选择这个环境的 `python.exe`。使用 NVIDIA GPU 时，请按你的 CUDA 驱动和显卡从 [PyTorch 官网](https://pytorch.org/get-started/locally/) 安装对应版本的 PyTorch；没有 CUDA 时程序会使用 CPU。
+`requirements.txt` 列出了应用运行所需的 Python 包。使用 NVIDIA GPU 时，请先按你的 CUDA 驱动和显卡从 [PyTorch 官网](https://pytorch.org/get-started/locally/) 安装对应版本的 PyTorch，再执行上述命令；没有 CUDA 时程序会使用 CPU。然后在应用中点击“选择 Python”，选择这个环境的 `python.exe`。
 
 ## 下载并放置模型
 

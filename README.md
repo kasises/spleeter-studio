@@ -42,7 +42,7 @@ npm start
 
 ## 配置分离引擎
 
-应用需要 Python 3.10 或以上、`audio-separator==0.47.0`、PyTorch，以及可用的 `ffmpeg` / `ffprobe`。界面检测不到环境时，点击“选择 Python”选择已配置的解释器。检测与推理都核验 CUDA 是否可用；GPU 使用 FP16，CPU 使用 FP32。
+应用需要 Python 3.10 或以上、根目录 [requirements.txt](requirements.txt) 中的 Python 包，以及可用的 `ffmpeg` / `ffprobe`。界面检测不到环境时，点击“选择 Python”选择已配置的解释器。检测与推理都核验 CUDA 是否可用；GPU 使用 FP16，CPU 使用 FP32。
 
 模型目录需要以下四个文件：
 
