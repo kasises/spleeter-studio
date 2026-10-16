@@ -1,4 +1,4 @@
-"""Create an isolated ready project with generated audio for UI verification."""
+"""创建一个隔离的就绪项目，并生成音频以供 UI 验证。"""
 
 import argparse
 import json

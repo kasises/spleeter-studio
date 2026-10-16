@@ -1,4 +1,4 @@
-"""Generate PNG and Windows ICO assets from the deterministic app mark."""
+"""从确定性的应用标志生成 PNG 和 Windows ICO 资源。"""
 
 from pathlib import Path
 
