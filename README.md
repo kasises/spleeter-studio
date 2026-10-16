@@ -19,6 +19,20 @@ Spleeter Studio 1.1.0 是一个 Windows 桌面多轨工作区。分离引擎采�
 - 按推理窗口更新进度、分离耗时、运行日志与中断任务恢复
 - 24 位 WAV 导出，各轨使用同一防削波增益，保留音轨间的相对音量
 
+## 界面截图
+
+### 项目库
+
+创建、搜索和管理本地分离项目，并查看每个项目的音轨数、时长和处理状态。
+
+![Spleeter Studio 项目库](assets/screenshots/project-library.png)
+
+### 多轨编辑与混音
+
+查看各音轨波形，独立控制人声、鼓、贝斯、钢琴、吉他和其他音轨的音量、静音、独奏与声像，并导出音频。
+
+![Spleeter Studio 多轨编辑与混音](assets/screenshots/multitrack-mixer.png)
+
 ## 分离模式
 
 | 模式 | 模型 | 输出 |
